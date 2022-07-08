@@ -19,4 +19,4 @@ Documents some of the work I have done on data science and other smaller Python 
 15. The lambda function 
 15a. The apply() method
 15b. A combination of the apply() and lambda methods
-16. Dot product{dot()}
+16. Cross product{dot()}
