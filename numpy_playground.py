@@ -1,13 +1,14 @@
 from array import array
-from statistics import median_low
+from statistics import mean, median_low
 import numpy as np
 import pandas as pd
 from pandas import DataFrame, Series
 
 
-pointer = input('WHere to start? from 1 - 15a  ')
+pointer = input('WHere to start? from (1 - 15a):  ')
 
 if pointer == '1':
+    #display array
     array = np.array([1,4,5,8],float)
     print (array)
     print ("")
@@ -27,19 +28,19 @@ if pointer == '2':
 
 if pointer == '3':
     #matrix indexing and slicing
-    two_D_array = np.array([[1, 2, 3], [4, 5, 6]], float)
+    two_D_array = np.array([[1, 3, 5], [4, 5, 6]], float)
     print (two_D_array)
     
-    print (two_D_array[1][1])
-    #multiplies specified list elements of the array elements
+    print (two_D_array[0][0])
+    #displays specified matrix element
  
     print (two_D_array[1, :])
-    #displays the enumerated array element i.e list
+    #displays the enumerated matrix row(0 = 1st, 1 = 2nd...) i.e list
     print (two_D_array[:, 2])
-    #displays  the specified elements of the array elements
+    #displays  the enumerated matrix column
 
 if pointer == '4':
-    # matrix aritmetics array arithmetics
+    # matrix arithmetics 
     array_1 = np.array([[1, 2], [3, 4]], float)
     array_2 = np.array([[5, 6], [7, 8]], float)
     print (array_1 + array_2)
@@ -61,17 +62,13 @@ if pointer == '5':
     #dot product
 
 if pointer == '6':
-        #The following code is to help you play with the concept of Series in Pandas.
+       
 
         #You can think of Series as an one-dimensional object that is similar to
         #an array, list, or column in a database. By default, it will assign an
         #index label to each item in the Series ranging from 0 to N, where N is
         #the number of items in the Series minus one.
 
-    #       Please feel free to play around with the concept of Series and see what it does
-
-        #*This playground is inspired by Greg Reda's post on Intro to Pandas Data Structures:
-        #http://www.gregreda.com/2013/10/26/intro-to-pandas-data-structure
 
     ##create a Series object
     #Dataframe is usually how pandas store data
@@ -186,21 +183,21 @@ if pointer == '13':
     print (football[['year', 'wins', 'losses']])
 
 if pointer == '14':
-    #boolean indexing in action
+    #boolean indexing in action, loc = iloc method, calling rows based on specified properties
     data = {'year': [2010, 2011, 2012, 2011, 2012, 2010, 2011, 2012],
             'team': ['Bears', 'Bears', 'Bears', 'Packers', 'Packers', 'Lions',
                      'Lions', 'Lions'],
             'wins': [11, 8, 10, 15, 11, 6, 10, 4],
             'losses': [5, 8, 6, 1, 5, 10, 6, 12]}
     football = pd.DataFrame(data)
-    print (football.iloc[[0]])
+    print (football.iloc[0])
     print ("")
     print (football.loc[[0]])
     #same with above
     print ("")
     print (football[3:5])
     print ("")
-    print (football[football.wins > 10])
+    print (football.wins[football.wins > 10])
     #WORKS REGARDLESS OF STRING ANNOTATION I.E WINS
     print ("")
     print (football[(football.wins > 10) & (football.team == "Packers")])
@@ -209,9 +206,7 @@ if pointer == '14':
 
 if pointer == '15':
 
-    #when you use apply  method, the result is itself a dataframe
-    #applymap works on the entire dataframe, map is for a single column
-    # (check e.g using lambda x: x>= 1)
+    
     
     #As a refresher on lambda, lambda functions are small inline functions that 
     #are defined on-the-fly in Python. lambda x: x>= 1 
@@ -245,13 +240,15 @@ if pointer == '15':
         irb = ast[ast['bronze'] > 0]
         print(np.mean(irb['bronze']))
     
-    # YOUR CODE HERE
+    
     
     avg_medal_count()
 
 if pointer == '15a':
-#same as 15, but using map methods
-#What does applymap differ from map on?
+#same as 15 but using the apply() method
+#when you use apply  method, the result is itself a dataframe
+#applymap works on the entire dataframe, map is for a single column
+# (check e.g using lambda x: x>= 1)
     def avg_medal_count():
     
     
@@ -271,15 +268,19 @@ if pointer == '15a':
                             'silver': Series(silver),
                             'bronze': Series(bronze)}    
         ast = DataFrame(olympic_medal_counts)
+        tes = ast[['gold', 'silver', 'bronze']]
 
-        irg = ast[['gold', 'silver', 'bronze']].apply(np.mean)
+        irg = tes.apply(np.mean)
         print(irg)
+
+        ast['gold_max'] = ast.gold.map({0:13, 1:14})
+        print(ast.gold_max)
 
     avg_medal_count()
         
 if pointer == '15b':
-#same as 15, but using map methods
-#What does applymap differ from map on?
+    #A combination of the apply() and lambda methods
+
     def avg_medal_count():
     
     
@@ -298,16 +299,15 @@ if pointer == '15b':
                             'gold': Series(gold),
                             'silver': Series(silver),
                             'bronze': Series(bronze)}    
-        ast = DataFrame(olympic_medal_counts)
+        ast = pd.DataFrame(olympic_medal_counts)
+        A = ast[ast.gold.map(lambda x: x >= 1)].gold
+        B = ast[ast.silver.map(lambda x: x >= 1)].silver
+        C = ast[ast.bronze.map(lambda x: x >= 1)].bronze
 
-        irg = pd.Series[ast.gold[ast.gold> 0], ast.silver[ast.silver> 0], ast.bronze[ast.bronze> 0]].apply(np.mean)
-        print(irg)
-
-        
-    
-    # YOUR CODE HERE
-    
+        ans = pd.Series([np.mean(A), np.mean(B), np.mean(C)])
+        print(ans)
     avg_medal_count()
+
 
 if pointer == '16':
     ##cross product method1
@@ -336,6 +336,9 @@ if pointer == '16':
         print(olympic_points_df)
     points()
 
+
+
+    
 
 
     
